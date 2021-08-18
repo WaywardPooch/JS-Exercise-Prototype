@@ -70,21 +70,15 @@ johnny.poop();
 // Check the person's stomach
 console.log("Task 1: Person's stomach after pooping =>", johnny.stomach);
 
+// ========== TASK 2 MVP ==========
 /*
   TASK 2
-    - Write a Car constructor that initializes `model` and `milesPerGallon` from arguments.
-    - All instances built with Car:
-        + should initialize with an `tank` at 0
-        + should initialize with an `odometer` at 0
-    - Give cars the ability to get fueled with a `.fill(gallons)` method. Add the gallons to `tank`.
-    - STRETCH: Give cars ability to `.drive(distance)`. The distance driven:
-        + Should cause the `odometer` to go up.
-        + Should cause the the `tank` to go down taking `milesPerGallon` into account.
-    - STRETCH: A car which runs out of `fuel` while driving can't drive any more distance:
-        + The `drive` method should return a string "I ran out of fuel at x miles!" x being `odometer`.
+  - Write a Car constructor that initializes `model` and `milesPerGallon` from arguments.
+  - All instances built with Car:
+      + should initialize with an `tank` at 0
+      + should initialize with an `odometer` at 0
+  - Give cars the ability to get fueled with a `.fill(gallons)` method. Add the gallons to `tank`.
 */
-
-// ========== TASK 2 MVP ==========
 
 // Create a Car constructor
 function Car(model, milesPerGallon) {
@@ -102,6 +96,37 @@ const mustang = new Car("mustang", 25); // Make a new car
 console.log("Task 2: Car object =>", mustang); // Log the new car object
 mustang.fill(4); // Fill the tank with 4 gallons of gas
 console.log("Task 2: Gallons in gas tank after filling =>", mustang.tank); // Log the gallons of gas in the tank
+
+// ========== TASK 2 STRETCH ==========
+/*
+  - STRETCH: Give cars ability to `.drive(distance)`. The distance driven:
+      + Should cause the `odometer` to go up.
+      + Should cause the the `tank` to go down taking `milesPerGallon` into account.
+  - STRETCH: A car which runs out of `fuel` while driving can't drive any more distance:
+      + The `drive` method should return a string "I ran out of fuel at x miles!" x being `odometer`.
+*/
+
+const civic = new Car("civic", 30);
+civic.fill(7);
+
+Car.prototype.drive = function (distance) {
+  // If there's enough gas, drive and increment odometer
+  if (distance / this.milesPerGallon <= this.tank) {
+    this.odometer += distance;
+    this.tank -= distance / this.milesPerGallon;
+  } else {
+    // If there's not enough gas to get to the destination, get distance traveled
+    const distanceTraveled = this.tank * this.milesPerGallon;
+    // Set the tank to empty
+    this.tank = 0;
+    // Return a failure statement
+    return `I ran out of fuel at ${distanceTraveled} miles!`;
+  }
+  // Return a success statement
+  return `This ${this.model} drove ${distance} miles! Fuel remaining: ${this.tank} gallons.`;
+};
+// Test the drive() method
+console.log("Task 2: STRETCH:", civic.drive(100));
 
 /*
   TASK 3
