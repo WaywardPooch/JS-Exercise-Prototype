@@ -130,10 +130,15 @@ console.log("Task 3: Baby playing =>", gabe.play()); // Log the output of baby.p
 /* 
   TASK 4
   In your own words explain the four principles for the "this" keyword below:
-  1. 
-  2. 
-  3. 
-  4. 
+
+  The "this" keyword requires context in order to have meaning, just like in English. 
+  Its context generally comes from implicit, explicit, or "new" binding, which is decided through how methods of objects are invoked.
+  If "this" is not given proper context, it enacts "window-binding," which is not very useful behavior (pretty much an error).
+  
+  1. Window binding happens when "this" is used in the global scope; it is essentially an error, producing a list containing the whole of JavaScript, itself.
+  2. Implicit binding is when "this" is given implied context through the invocation of object methods using the "dot" operator.
+  3. Explicit binding is when "this" is given explicit context by invoking functions using .apply(), .bind(), or .call(), with the object to stand in for "this" passed-in.
+  4. New binding is when "this" is given context through it being assigned to a newly-created object spawned from a constructor function.
 */
 
 ///////// END OF CHALLENGE /////////
