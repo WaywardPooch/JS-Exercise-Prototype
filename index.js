@@ -102,6 +102,7 @@ const mustang = new Car("mustang", 25); // Make a new car
 console.log("Task 2: Car object =>", mustang); // Log the new car object
 mustang.fill(4); // Fill the tank with 4 gallons of gas
 console.log("Task 2: Gallons in gas tank after filling =>", mustang.tank); // Log the gallons of gas in the tank
+
 /*
   TASK 3
     - Write a Baby constructor subclassing Person.
@@ -109,7 +110,22 @@ console.log("Task 2: Gallons in gas tank after filling =>", mustang.tank); // Lo
     - Besides the methods on Person.prototype, babies have the ability to `.play()`:
         + Should return a string "Playing with x", x being the favorite toy.
 */
-function Baby() {}
+
+// Create baby constructor
+function Baby(name, age, favoriteToy) {
+  Person.call(this, name, age); // Assign the parent
+  this.favoriteToy = favoriteToy;
+}
+// Inherit parent's methods
+Baby.prototype = Object.create(Person.prototype);
+// Add a play() method to the baby's prototype
+Baby.prototype.play = function () {
+  return `Playing with ${this.favoriteToy}`;
+};
+// Test if the baby can play
+const gabe = new Baby("Gabe", 0.25, "his red ball"); // Create a baby
+console.log("Task 3: Baby object =>", gabe); // Log the baby object
+console.log("Task 3: Baby playing =>", gabe.play()); // Log the output of baby.play()
 
 /* 
   TASK 4
