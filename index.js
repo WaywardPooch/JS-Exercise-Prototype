@@ -84,8 +84,24 @@ console.log("Task 1: Person's stomach after pooping =>", johnny.stomach);
         + The `drive` method should return a string "I ran out of fuel at x miles!" x being `odometer`.
 */
 
-function Car() {}
+// ========== TASK 2 MVP ==========
 
+// Create a Car constructor
+function Car(model, milesPerGallon) {
+  this.model = model;
+  this.milesPerGallon = milesPerGallon;
+  this.tank = 0;
+  this.odometer = 0;
+}
+// Add a fill method to its prototype
+Car.prototype.fill = function (gallons) {
+  this.tank += gallons;
+};
+// Test the above with an example car
+const mustang = new Car("mustang", 25); // Make a new car
+console.log("Task 2: Car object =>", mustang); // Log the new car object
+mustang.fill(4); // Fill the tank with 4 gallons of gas
+console.log("Task 2: Gallons in gas tank after filling =>", mustang.tank); // Log the gallons of gas in the tank
 /*
   TASK 3
     - Write a Baby constructor subclassing Person.
