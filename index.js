@@ -19,7 +19,6 @@ Airplane.prototype.land = function () {
   this.isFlying = false;
 };
 
-
 /*
 // 👇 COMPLETE YOUR WORK BELOW 👇
 // 👇 COMPLETE YOUR WORK BELOW 👇
@@ -39,34 +38,95 @@ Airplane.prototype.land = function () {
         + It should return a string with `name` and `age`. Example: "Mary, 50"
 */
 
-function Person() {
-  
+function Person(name, age) {
+  this.name = name;
+  this.age = age;
+  this.stomach = [];
 }
+Person.prototype.eat = function (food) {
+  if (this.stomach.length < 10) {
+    this.stomach.push(food);
+  }
+};
+Person.prototype.poop = function () {
+  this.stomach = [];
+};
+Person.prototype.toString = function () {
+  return `${this.name}, ${this.age}`;
+};
 
+// Make a person object
+const johnny = new Person("johnny", "32");
+// Log the new person object
+console.log("Task 1: Person =>", johnny.toString());
+// Make the person eat food
+johnny.eat("toast");
+johnny.eat("eggs");
+johnny.eat("bacon");
+// Check the person's stomach
+console.log("Task 1: Person's stomach after eating =>", johnny.stomach);
+// Make the person poop
+johnny.poop();
+// Check the person's stomach
+console.log("Task 1: Person's stomach after pooping =>", johnny.stomach);
 
-
-
-
-
-
+// ========== TASK 2 MVP ==========
 /*
   TASK 2
-    - Write a Car constructor that initializes `model` and `milesPerGallon` from arguments.
-    - All instances built with Car:
-        + should initialize with an `tank` at 0
-        + should initialize with an `odometer` at 0
-    - Give cars the ability to get fueled with a `.fill(gallons)` method. Add the gallons to `tank`.
-    - STRETCH: Give cars ability to `.drive(distance)`. The distance driven:
-        + Should cause the `odometer` to go up.
-        + Should cause the the `tank` to go down taking `milesPerGallon` into account.
-    - STRETCH: A car which runs out of `fuel` while driving can't drive any more distance:
-        + The `drive` method should return a string "I ran out of fuel at x miles!" x being `odometer`.
+  - Write a Car constructor that initializes `model` and `milesPerGallon` from arguments.
+  - All instances built with Car:
+      + should initialize with an `tank` at 0
+      + should initialize with an `odometer` at 0
+  - Give cars the ability to get fueled with a `.fill(gallons)` method. Add the gallons to `tank`.
 */
 
-function Car() {
-  
+// Create a Car constructor
+function Car(model, milesPerGallon) {
+  this.model = model;
+  this.milesPerGallon = milesPerGallon;
+  this.tank = 0;
+  this.odometer = 0;
 }
+// Add a fill method to its prototype
+Car.prototype.fill = function (gallons) {
+  this.tank += gallons;
+};
+// Test the above with an example car
+const mustang = new Car("mustang", 25); // Make a new car
+console.log("Task 2: Car object =>", mustang); // Log the new car object
+mustang.fill(4); // Fill the tank with 4 gallons of gas
+console.log("Task 2: Gallons in gas tank after filling =>", mustang.tank); // Log the gallons of gas in the tank
 
+// ========== TASK 2 STRETCH ==========
+/*
+  - STRETCH: Give cars ability to `.drive(distance)`. The distance driven:
+      + Should cause the `odometer` to go up.
+      + Should cause the the `tank` to go down taking `milesPerGallon` into account.
+  - STRETCH: A car which runs out of `fuel` while driving can't drive any more distance:
+      + The `drive` method should return a string "I ran out of fuel at x miles!" x being `odometer`.
+*/
+
+const civic = new Car("civic", 30);
+civic.fill(7);
+
+Car.prototype.drive = function (distance) {
+  // If there's enough gas, drive and increment odometer
+  if (distance / this.milesPerGallon <= this.tank) {
+    this.odometer += distance;
+    this.tank -= distance / this.milesPerGallon;
+  } else {
+    // If there's not enough gas to get to the destination, get distance traveled
+    const distanceTraveled = this.tank * this.milesPerGallon;
+    // Set the tank to empty
+    this.tank = 0;
+    // Return a failure statement
+    return `I ran out of fuel at ${distanceTraveled} miles!`;
+  }
+  // Return a success statement
+  return `This ${this.model} drove ${distance} miles! Fuel remaining: ${this.tank} gallons.`;
+};
+// Test the drive() method
+console.log("Task 2: STRETCH:", civic.drive(100));
 
 /*
   TASK 3
@@ -75,32 +135,48 @@ function Car() {
     - Besides the methods on Person.prototype, babies have the ability to `.play()`:
         + Should return a string "Playing with x", x being the favorite toy.
 */
-function Baby() {
- 
-}
 
+// Create baby constructor
+function Baby(name, age, favoriteToy) {
+  Person.call(this, name, age); // Assign the parent
+  this.favoriteToy = favoriteToy;
+}
+// Inherit parent's methods
+Baby.prototype = Object.create(Person.prototype);
+// Add a play() method to the baby's prototype
+Baby.prototype.play = function () {
+  return `Playing with ${this.favoriteToy}`;
+};
+// Test if the baby can play
+const gabe = new Baby("Gabe", 0.25, "his red ball"); // Create a baby
+console.log("Task 3: Baby object =>", gabe); // Log the baby object
+console.log("Task 3: Baby playing =>", gabe.play()); // Log the output of baby.play()
 
 /* 
   TASK 4
   In your own words explain the four principles for the "this" keyword below:
-  1. 
-  2. 
-  3. 
-  4. 
-*/
 
+  The "this" keyword requires context in order to have meaning, just like in English. 
+  Its context generally comes from implicit, explicit, or "new" binding, which is decided through how methods of objects are invoked.
+  If "this" is not given proper context, it enacts "window-binding," which is not very useful behavior (pretty much an error).
+  
+  1. Window binding happens when "this" is used in the global scope; it is essentially an error, producing a list containing the whole of JavaScript, itself.
+  2. Implicit binding is when "this" is given implied context through the invocation of object methods using the "dot" operator.
+  3. Explicit binding is when "this" is given explicit context by invoking functions using .apply(), .bind(), or .call(), with the object to stand in for "this" passed-in.
+  4. New binding is when "this" is given context through it being assigned to a newly-created object spawned from a constructor function.
+*/
 
 ///////// END OF CHALLENGE /////////
 
 /* 🛑🛑🛑🛑🛑🛑🛑🛑🛑🛑 Please do not modify anything below this line 🛑🛑🛑🛑🛑🛑🛑🛑🛑🛑 */
-function foo(){
-  console.log('its working!');
-  return 'bar';
+function foo() {
+  console.log("its working!");
+  return "bar";
 }
 foo();
 module.exports = {
   foo,
-  Person, 
+  Person,
   Car,
-  Baby
-}
+  Baby,
+};
